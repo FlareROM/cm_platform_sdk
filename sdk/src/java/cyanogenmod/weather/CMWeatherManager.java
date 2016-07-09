@@ -25,6 +25,7 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.util.ArraySet;
+import android.util.Log;
 import cyanogenmod.app.CMContextConstants;
 import cyanogenmod.providers.CMSettings;
 import cyanogenmod.providers.WeatherContract;
@@ -90,7 +91,7 @@ public class CMWeatherManager {
 
         if (context.getPackageManager().hasSystemFeature(
                 CMContextConstants.Features.WEATHER_SERVICES) && (sWeatherManagerService == null)) {
-            throw new RuntimeException("Unable to bind the CMWeatherManagerService");
+            Log.wtf(TAG, "Unable to bind the CMWeatherManagerService");
         }
         mHandler = new Handler(appContext.getMainLooper());
     }
@@ -245,6 +246,8 @@ public class CMWeatherManager {
      */
     public void registerWeatherServiceProviderChangeListener(
             @NonNull WeatherServiceProviderChangeListener listener) {
+        if (sWeatherManagerService == null) return;
+
         synchronized (mProviderChangedListeners) {
             if (mProviderChangedListeners.contains(listener)) {
                 throw new IllegalArgumentException("Listener already registered");
@@ -266,6 +269,8 @@ public class CMWeatherManager {
      */
     public void unregisterWeatherServiceProviderChangeListener(
             @NonNull WeatherServiceProviderChangeListener listener) {
+        if (sWeatherManagerService == null) return;
+
         synchronized (mProviderChangedListeners) {
             if (!mProviderChangedListeners.contains(listener)) {
                 throw new IllegalArgumentException("Listener was never registered");
@@ -286,6 +291,8 @@ public class CMWeatherManager {
      * @return the service's label
      */
     public String getActiveWeatherServiceProviderLabel() {
+        if (sWeatherManagerService == null) return null;
+
         try {
             return sWeatherManagerService.getActiveWeatherServiceProviderLabel();
         } catch(RemoteException e){

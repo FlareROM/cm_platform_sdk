@@ -70,6 +70,12 @@
          Used to decide if the user can change the multiple LEDs settings -->
     <bool name="config_multipleNotificationLeds">false</bool>
 
+    <!-- Should we send the battery level to the HAL as the lower 8 bits
+         of the color?  This should only be used if the HAL does special
+         handling of the value- a use case for this would be a segmented
+         LED that can function as a range bar -->
+    <bool name="config_useSegmentedBatteryLed">false</bool>
+
     <!-- Default, comma-delimited, quick settings tiles. See QSConstants.java for a list of all available tiles -->
     <string name="config_defaultQuickSettingsTiles">wifi,bt,dnd,cell,airplane,rotation,location,edit,flashlight,cast,hotspot,inversion,live_display</string>
 
@@ -83,7 +89,7 @@
     <!-- Default wi-fi direct name -->
     <string name="config_wifiDirectName" translatable="false"></string>
 
-    <!-- Defines external services to be started by the SystemServer at boot. The service itself
+    <!-- Defines external services to be started by the CMSystemServer at boot. The service itself
          should publish as a binder services in its onStart -->
     <string-array name="config_externalCMServices">
         <item>org.cyanogenmod.platform.internal.CMStatusBarManagerService</item>
@@ -100,4 +106,7 @@
         <item>org.cyanogenmod.platform.internal.display.LiveDisplayService</item>
         <item>org.cyanogenmod.platform.internal.CMAudioService</item>
     </string-array>
+
+    <!-- The CMSystemServer class that is invoked from Android's SystemServer -->
+    <string name="config_externalSystemServer" translatable="false">org.cyanogenmod.platform.internal.CMSystemServer</string>
 </resources>
